@@ -130,7 +130,8 @@ class Bod:
 
 
 class Manik:
-    def __init__(self):
+    def __init__(self, id, x, y, ktoreho_hraca, typ, zlato, zelezo, spenat,
+                 kovac_energia):
         self.id = id
         self.x = x
         self.y = y
