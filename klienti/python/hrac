@@ -1,0 +1,44 @@
+#!/usr/bin/env python3
+
+import os
+import random
+from time import time
+
+from consts import *
+from wrapper import (
+    Teren, Stav, Prikaz, Mapa
+)
+
+
+def init():
+    pass
+
+
+def next_moves(teren, stav):
+    prikazy = []
+    # Vas kod tu
+    return prikazy
+
+
+def main():
+    pid = os.getpid()
+    epoch = int(time())
+    random.seed(seed)
+    print('START pid={}, seed={}'.format(pid, epoch))
+
+    mapa = Mapa.from_stdin()
+    init()
+
+    while True:
+        teren = Teren.from_stdin()
+        stav = Stav.form_stdin()
+
+        prikazy = next_moves(teren, stav)
+
+        for prikaz in prikazy:
+            print(prikaz)
+
+        print('.', flush=True)
+
+if __name__ == '__main__':
+    main()
