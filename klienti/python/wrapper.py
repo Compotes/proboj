@@ -12,13 +12,15 @@ def load_list(load_element):
 
 
 class Teren:
-    def __init__(self):
-        self.data = None
+    def __init__(self, data):
+        self.data = data
 
-    def load(self):
+    @classmethod
+    def from_stdin(self):
         load_int = lambda: int(input())
         load_list_of_int = lambda: load_list(load_int)
-        self.data = load_list(load_list_of_int)
+        data = load_list(load_list_of_int)
+        return Teren(data)
 
     def __str__(self):
         flat = [len(self.data)]
@@ -36,13 +38,14 @@ class Mapa:
         self.pocet_hracov = None
         self.w = None
         self.h = None
-        self.priblizny_teren = Teren()
+        self.priblizny_teren = None
 
-    def load(self):
-        self.pocet_hracov = int(input())
-        self.w = int(input())
-        self.h = int(input())
-        self.priblizny_teren.load()
+    @classmethod
+    def from_stdin(cls):
+        pocet_hracov = int(input())
+        w = int(input())
+        h = int(input())
+        priblizny_teren = Teren.from_stdin()
 
     def __str__(self):
         return '{}\n{}\n{}\n{}'.format(
@@ -108,3 +111,17 @@ class Bod:
 
     def __str__(self):
         return '{}\n{}'.format(self.x, self.y)
+
+
+class Manik:
+    def __init__(self):
+        self.id = id
+        self.x = x
+        self.y = y
+        self.ktoreho_hraca = ktoreho_hraca
+        self.typ = typ
+        self.zlato = zlato
+        self.zelezo = zelezo
+        self.spenat = spenat
+        self.kovac_energia = kovac_energia
+        self.pozicia = Bod(self.x, self.y)
