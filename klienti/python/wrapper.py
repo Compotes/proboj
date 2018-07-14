@@ -2,6 +2,7 @@
 import sys
 from functools import total_ordering
 
+from consts import MAPA_NEVIEM
 
 def load_list(load_element):
     size = int(input())
@@ -81,8 +82,8 @@ class Stav:
 
     @classmethod
     def form_stdin(cls):
-        hraci = load_list(lambda: int(input()))
-        manici = load_list(lambda: int(input()))
+        hraci = load_list(Hrac.from_stdin)
+        manici = load_list(Manik.from_stdin)
         dalsi_id = int(input())
         cas = int(input())
         return Stav(hraci, manici, cas, dalsi_id)
@@ -99,7 +100,7 @@ class Stav:
 
 
 class Prikaz:
-    def __init__(kto, typ, ciel, parameter):
+    def __init__(self, kto, typ, ciel, parameter=0):
         self.kto = kto
         self.typ = typ
         self.ciel = ciel
@@ -112,6 +113,7 @@ class Prikaz:
             self.ciel,
             self.parameter
         )
+
 
 @total_ordering
 class Bod:
@@ -142,3 +144,31 @@ class Manik:
         self.spenat = spenat
         self.kovac_energia = kovac_energia
         self.pozicia = Bod(self.x, self.y)
+
+    @classmethod
+    def from_stdin(cls):
+        id = int(input())
+        x = int(input())
+        y = int(input())
+        ktoreho_hraca = int(input())
+        typ = int(input())
+        zlato = int(input())
+        zelezo = int(input())
+        spenat = int(input())
+        kovac_energia = int(input())
+
+        return Manik(
+            id, x, y, ktoreho_hraca, typ, zlato, zelezo, spenat, kovac_energia
+        )
+
+
+class Hrac:
+    def __init__(self, skore, mapovanie):
+        self.skore = skore
+        self.mapovanie = mapovanie
+
+    @classmethod
+    def from_stdin(cls):
+        skore = int(input())
+        mapovanie = load_list(lambda: int(input()))
+        return Hrac(skore, mapovanie)
