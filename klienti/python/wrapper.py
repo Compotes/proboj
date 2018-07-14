@@ -22,6 +22,22 @@ class Teren:
         data = load_list(load_list_of_int)
         return Teren(data)
 
+    @classmethod
+    def from_compressed(cls):
+        width, height, *zakodovany_teren = load_list(lambda: int(input()))
+        new_map = [[MAPA_NEVIEM] * width for _ in range(height)]
+
+        x = y = 0
+        for i in range(0, len(zakodovany_teren), 2):
+            for j in range(zakodovany_teren[i+1]):
+                new_map[y][x] = zakodovany_teren[i]
+                x += 1
+                if x == width:
+                    x = 0
+                    y += 1
+        return Teren(new_map)
+
+
     def __str__(self):
         flat = [len(self.data)]
         for row in self.data:
