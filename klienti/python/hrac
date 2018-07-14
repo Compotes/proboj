@@ -11,7 +11,7 @@ from wrapper import (
     Teren, Stav, Prikaz, Mapa, Bod
 )
 
-
+# Use for debug prints
 debug = partial(print, file=sys.stderr)
 
 def init():
@@ -20,9 +20,8 @@ def init():
 
 
 def next_moves(teren, stav):
-    debug(stav)
     prikazy = []
-    print(stav.manici, file=sys.stderr)
+    debug(stav.manici)
     for manik in stav.manici:
         if manik.ktoreho_hraca == 0:
             if manik.typ == MANIK_KOVAC:
@@ -47,11 +46,9 @@ def main():
         stav = Stav.form_stdin()
 
         prikazy = next_moves(teren, stav)
-        print(prikazy, file=sys.stderr)
         print(len(prikazy))
         for prikaz in prikazy:
             print(prikaz)
-            print(prikaz, file=sys.stderr)
 
         print('.', flush=True)
 
