@@ -1,42 +1,57 @@
 #!/usr/bin/env python3
 
 import os
+import sys
 import random
+from functools import partial
 from time import time
 
 from consts import *
 from wrapper import (
-    Teren, Stav, Prikaz, Mapa
+    Teren, Stav, Prikaz, Mapa, Bod
 )
 
 
+debug = partial(print, file=sys.stderr)
+
 def init():
+    # Vas kod tu
     pass
 
 
 def next_moves(teren, stav):
+    debug(stav)
     prikazy = []
-    # Vas kod tu
+    print(stav.manici, file=sys.stderr)
+    for manik in stav.manici:
+        if manik.ktoreho_hraca == 0:
+            if manik.typ == MANIK_KOVAC:
+                prikazy.append(Prikaz(manik.id, PRIKAZ_KUJ, Bod(manik.x, manik.y+1), MANIK_BANIK))
+            elif manik.typ == MANIK_BANIK:
+                prikazy.append(Prikaz(manik.id, PRIKAZ_CHOD, Bod(manik.x+1, manik.y)))
+
     return prikazy
 
 
 def main():
     pid = os.getpid()
     epoch = int(time())
-    random.seed(seed)
-    print('START pid={}, seed={}'.format(pid, epoch))
+    random.seed(pid * epoch)
+    print('START pid={}, seed={}'.format(pid, epoch), file=sys.stderr)
 
     mapa = Mapa.from_stdin()
     init()
 
     while True:
-        teren = Teren.from_stdin()
+        teren = Teren.from_compressed()
         stav = Stav.form_stdin()
 
         prikazy = next_moves(teren, stav)
-
+        print(prikazy, file=sys.stderr)
+        print(len(prikazy))
         for prikaz in prikazy:
             print(prikaz)
+            print(prikaz, file=sys.stderr)
 
         print('.', flush=True)
 
