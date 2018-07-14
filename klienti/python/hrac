@@ -1,53 +1,44 @@
 #!/usr/bin/env python3
-import sys
-from pprint import pprint
 
-def load_list(load_element):
-    size = int(input())
-    res = []
-    for _ in range(size):
-        res.append(load_element())
-    return res
+import os
+import random
+from time import time
 
-def save_list(l, save_element):
-    print(len(l))
-    for element in l:
-        save_element(element)
+from consts import *
+from wrapper import (
+    Teren, Stav, Prikaz, Mapa
+)
 
-class Teren:
-    def __init__(self):
-        self.data = None
-    
-    def load(self):
-        load_int = lambda: int(input())
-        load_list_of_int = lambda: load_list(load_int)
-        self.data = load_list(load_list_of_int)
-    
-    def __str__(self):
-        save_list(self.data, lambda x: save_list(x, print))
 
-class Mapa:
-    def __init__(self):
-        self.pocet_hracov = None
-        self.w = None
-        self.h = None
-        self.priblizny_teren = Teren()
-    
-    def load(self):
-        self.pocet_hracov = int(input())
-        self.w = int(input())
-        self.h = int(input())
-        self.priblizny_teren.load()
-    
-    def __str__(self):
-        print(self.pocet_hracov)
-        print(self.w)
-        print(self.h)
-        print(priblizny_teren)
+def init():
+    pass
 
-mapa = Mapa()
-mapa.load()
 
-print('{} {}'.format(mapa.w, mapa.h), file=sys.stderr)
-for l in mapa.priblizny_teren.data:
-    print(''.join(map(str,l)), file=sys.stderr)
+def next_moves(teren, stav):
+    prikazy = []
+    # Vas kod tu
+    return prikazy
+
+
+def main():
+    pid = os.getpid()
+    epoch = int(time())
+    random.seed(seed)
+    print('START pid={}, seed={}'.format(pid, epoch))
+
+    mapa = Mapa.from_stdin()
+    init()
+
+    while True:
+        teren = Teren.from_stdin()
+        stav = Stav.form_stdin()
+
+        prikazy = next_moves(teren, stav)
+
+        for prikaz in prikazy:
+            print(prikaz)
+
+        print('.', flush=True)
+
+if __name__ == '__main__':
+    main()
