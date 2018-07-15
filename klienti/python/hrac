@@ -1,53 +1,56 @@
 #!/usr/bin/env python3
+
+import os
 import sys
-from pprint import pprint
+import random
+from functools import partial
+from time import time
 
-def load_list(load_element):
-    size = int(input())
-    res = []
-    for _ in range(size):
-        res.append(load_element())
-    return res
+from consts import *
+from wrapper import (
+    Teren, Stav, Prikaz, Mapa, Bod
+)
 
-def save_list(l, save_element):
-    print(len(l))
-    for element in l:
-        save_element(element)
+# Use for debug prints
+debug = partial(print, file=sys.stderr)
 
-class Teren:
-    def __init__(self):
-        self.data = None
-    
-    def load(self):
-        load_int = lambda: int(input())
-        load_list_of_int = lambda: load_list(load_int)
-        self.data = load_list(load_list_of_int)
-    
-    def __str__(self):
-        save_list(self.data, lambda x: save_list(x, print))
+def init():
+    # Vas kod tu
+    pass
 
-class Mapa:
-    def __init__(self):
-        self.pocet_hracov = None
-        self.w = None
-        self.h = None
-        self.priblizny_teren = Teren()
-    
-    def load(self):
-        self.pocet_hracov = int(input())
-        self.w = int(input())
-        self.h = int(input())
-        self.priblizny_teren.load()
-    
-    def __str__(self):
-        print(self.pocet_hracov)
-        print(self.w)
-        print(self.h)
-        print(priblizny_teren)
 
-mapa = Mapa()
-mapa.load()
+def next_moves(teren, stav):
+    prikazy = []
+    debug(stav.manici)
+    for manik in stav.manici:
+        if manik.ktoreho_hraca == 0:
+            if manik.typ == MANIK_KOVAC:
+                prikazy.append(Prikaz(manik.id, PRIKAZ_KUJ, Bod(manik.x, manik.y+1), MANIK_BANIK))
+            elif manik.typ == MANIK_BANIK:
+                prikazy.append(Prikaz(manik.id, PRIKAZ_CHOD, Bod(manik.x+1, manik.y)))
 
-print('{} {}'.format(mapa.w, mapa.h), file=sys.stderr)
-for l in mapa.priblizny_teren.data:
-    print(''.join(map(str,l)), file=sys.stderr)
+    return prikazy
+
+
+def main():
+    pid = os.getpid()
+    epoch = int(time())
+    random.seed(pid * epoch)
+    print('START pid={}, seed={}'.format(pid, epoch), file=sys.stderr)
+
+    mapa = Mapa.from_stdin()
+    init()
+
+    while True:
+        teren = Teren.from_compressed()
+        stav = Stav.form_stdin()
+
+        prikazy = next_moves(teren, stav)
+        print(len(prikazy))
+        for prikaz in prikazy:
+            print(prikaz)
+
+        print('.', flush=True)
+
+if __name__ == '__main__':
+    main()
