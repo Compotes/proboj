@@ -52,6 +52,10 @@ def get_eligible_teams(teams):
 def generate_round(teams):
   tmp = teams.copy()
   random.shuffle(tmp)
+  if len(tmp) < 2:
+    return []
+  if len(tmp) < 5:
+    return [t.id for t in tmp]
   if len(tmp) % 4 == 0:
     pass
   elif len(tmp) % 4 == 2:
