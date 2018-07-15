@@ -212,7 +212,9 @@ def records():
         state = state_captions[manifest['state']]
         rank = None
         if manifest['state'] == 'displayed':
-            rank = [int(r) for r in manifest['rank'].split(',')]
+            ranks = manifest['rank'].split(',')
+            titles = manifest['titles'].split(',')
+            rank = ['{}: {}'.format(t, r) for t, r in zip(titles, ranks)]
         data.append(dict(id=id, begin=begin, link=link, map=map, state=state,
             rank=rank))
     return render_template('records.html', records=data)
