@@ -55,7 +55,7 @@ def generate_round(teams):
   if len(tmp) < 2:
     return []
   if len(tmp) < 5:
-    return [t.id for t in tmp]
+    return [[t.id for t in tmp]]
   if len(tmp) % 4 == 0:
     pass
   elif len(tmp) % 4 == 2:
