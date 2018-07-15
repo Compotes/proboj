@@ -9,7 +9,7 @@ naserveri: hrac
 
 .PHONY: klient.tar.gz
 klient.tar.gz:
-	tar czf $@ * $(addprefix --exclude=,$(CLEAN))
+	tar czf $@ $(addprefix --exclude=,$(CLEAN)) *
 
 hrac: main.o server_marshal.o server_update.o
 	$(LINK.cpp) $^ $(LDLIBS) -o $@
