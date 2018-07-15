@@ -139,7 +139,8 @@ void prehladajBfs(const Teren& teren, Bod start, Teren& vzdialenost) {
   vzdialenost.set(start, 0);
   Q.push(start);
   while (!Q.empty()) {
-    Bod p = Q.front(); Q.pop();
+    Bod p = Q.front();
+    Q.pop();
     for (int d = 0; d < 4; d++) {
       Bod n(p.x + DX[d], p.y + DY[d]);
       if (teren.get(n) == MAPA_OKRAJ) continue;
