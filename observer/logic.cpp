@@ -8,7 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include "SDL.h"
-//#include "SDL_ttf.h"
+#include "SDL_ttf.h"
 using namespace std;
 
 #include "logic.h"
@@ -30,8 +30,8 @@ static vector<string> titles;
 
 static set<int> frameTimes;
 
-//static TTF_Font *font;
-static int /*fontWidth,*/ fontHeight;
+static TTF_Font *font;
+static int fontWidth, fontHeight;
 static SDL_Surface *mapSurface;
 
 const int farbyHracov[] = {
@@ -67,18 +67,18 @@ void nacitajMedia() {
   }
   fontfile[len] = 0;
 
-  /*font = TTF_OpenFont(fontfile, 12);
+  font = TTF_OpenFont(fontfile, 12);
   if (!font) {
     fprintf(stderr, "neviem otvorit %s: %s\n", fontfile, TTF_GetError());
     exit(1);
-  }*/
+  }
 
-  //fontHeight = TTF_FontLineSkip(font);
+  fontHeight = TTF_FontLineSkip(font);
 
-  /*SDL_Surface *space = TTF_RenderUTF8_Shaded(font, " ", SDL_Color(), SDL_Color());
+  SDL_Surface *space = TTF_RenderUTF8_Shaded(font, " ", SDL_Color(), SDL_Color());
   fontWidth = space->w;
   SDL_FreeSurface(space);
-*/
+
   mapSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, mapa.w*scale, mapa.h*scale, 32,
       0xFF0000, 0x00FF00, 0x0000FF, 0x000000);
   if (mapSurface->pitch != mapSurface->w * 4) {
@@ -187,8 +187,8 @@ public:
   Printer(SDL_Surface *_screen, int _y) : screen(_screen), x(0), y(mapSurface->h + _y * fontHeight) {
   }
   void print(const char *text, int width, bool right = true, Uint32 color = 0xFFFFFF) {
-    //SDL_Color fg; fg.r = (color>>16)&0xFF; fg.g = (color>>8)&0xFF; fg.b = (Uint8)(color&0xFF);
-    //SDL_Color bg = { 0, 0, 0 };
+    SDL_Color fg; fg.r = (color>>16)&0xFF; fg.g = (color>>8)&0xFF; fg.b = (Uint8)(color&0xFF);
+    SDL_Color bg = { 0, 0, 0 };
 
     if (x != 0) {
       x++;
@@ -197,12 +197,12 @@ public:
       x++;
     }
 
-    /*SDL_Surface *image = TTF_RenderUTF8_Shaded(font, text, fg, bg);
+    SDL_Surface *image = TTF_RenderUTF8_Shaded(font, text, fg, bg);
     SDL_Rect src; src.x = 0; src.y = 0; src.w = min((int)image->w, width * fontWidth); src.h = image->h;
     SDL_Rect dest; dest.x = x + (right && image->w < width * fontWidth ? width * fontWidth - image->w : 0); dest.y = y;
     SDL_BlitSurface(image, &src, screen, &dest);
     SDL_FreeSurface(image);
-    x += width * fontWidth;*/
+    x += width * fontWidth;
   }
 private:
   SDL_Surface *screen;

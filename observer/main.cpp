@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <string>
 #include "SDL.h"
-//#include "SDL_ttf.h"
+#include "SDL_ttf.h"
 using namespace std;
 
 #include "logic.h"
@@ -28,8 +28,8 @@ int main(int argc, char *argv[]) {
   SDL_Init(SDL_INIT_VIDEO);
   atexit(SDL_Quit);
 
-  //TTF_Init();
-  //atexit(TTF_Quit);
+  TTF_Init();
+  atexit(TTF_Quit);
 
   nacitajMedia();
 
